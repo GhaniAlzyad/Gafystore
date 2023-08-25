@@ -15,7 +15,7 @@ def init_app():
     async def shutdown():
         await db.close()
 
-    from .src.controllers import user_controller
+    from .src.controllers import user_controller, account_controller, game_controller, price_controller, credit_controller
 
     @app.get('/health-check')
     async def pong():
@@ -26,5 +26,30 @@ def init_app():
         prefix="/api/v1"
         )
     return app
+
+    app.include_router(
+        account_controller.api,
+        prefix="/api/v1"
+        )
+    return app
+
+    app.include_router(
+        game_controller.api,
+        prefix="/api/v1"
+        )
+    return app
+
+    app.include_router(
+        price_controller.api,
+        prefix="/api/v1"
+        )
+    return app
+
+    app.include_router(
+        credit_controller.api,
+        prefix="/api/v1"
+        )
+    return app
+
 
 app = init_app()
