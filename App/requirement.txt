@@ -1,0 +1,7 @@
+fastapi==0.101.1  # Web framework for building APIs
+uvicorn==0.23.2   # ASGI server for running FastAPI
+sqlalchemy==2.0.20  # SQL toolkit and Object-Relational Mapping (ORM)
+alembic==1.11.3    # Database migration tool for SQLAlchemy
+asyncpg==0.28.0    # Asynchronous PostgreSQL driver
+werkzeug==2.3.7    # Web application WSGI utility library
+python-dotenv==1.0.0    # loading variable from `.env`
