@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from ..schema import HargaResponseSchema, HargaRequestSchema
-from ..models import Harga
+from App.src.schema import HargaResponseSchema, HargaRequestSchema
+from App.src.models import Harga
 from typing import List
 
 

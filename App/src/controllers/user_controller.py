@@ -1,7 +1,8 @@
-from fastapi import APIRouter
-from ..schema import UserResponseSchema, UserRequestSchema, LoginSchema
-from ..models import User
-from typing import List
+from fastapi import APIRouter, Header
+from App.src.schema import UserResponseSchema, UserRequestSchema, UserUpdateSchema
+from App.src.models import User
+from App.src.logics import UserLogic
+from App.src.logics.auth_logic import token_validator
 
 
 api = APIRouter(
@@ -11,35 +12,22 @@ api = APIRouter(
 
 @api.post("/", response_model=UserResponseSchema)
 async def create_user(user: UserRequestSchema):
-    user = await User.create(**dict(user))
-    return user
+    return await UserLogic.create(user)
 
 @api.get("/{id}", response_model=UserResponseSchema)
-async def get_user(id: int):
-    user = await User.get(id)
-    return user
+async def get_user(id: str, token: str = Header(None)):
+    auth = await token_validator(token)
+    if auth:
+        return await UserLogic.get_by_id(id, auth.username)
 
 @api.get("/",response_model=list[UserResponseSchema])
 async def get_all_user():
-    users = await User.get_all()
-    return users
+    return await User.get_all()
 
 @api.put('/{id}', response_model=UserResponseSchema)
-async def update(id: int,user: UserRequestSchema):
-    user = await User.update(id,**dict(user))
-    return user
+async def update(user: UserUpdateSchema):
+    return await UserLogic.update(user)
 
 @api.delete('/{id}',response_model=bool)
-async def delete (id: int):
-    return await User.delete(id)
-
-@api.post('/login',response_model=bool)
-async def login(login: LoginSchema):
-    login = await User.login(login)
-
-    if login is not None:
-        token = await User.generate_token()
-        
-        return True
-    
-    return False
+async def delete (id: str):
+    return await UserLogic.delete(id)

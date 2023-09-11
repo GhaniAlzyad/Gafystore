@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from ..schema import CreditsResponseSchema, CreditsRequestSchema
-from ..models import Credit
+from App.src.schema import CreditsResponseSchema, CreditsRequestSchema
+from App.src.models import Credit
 from typing import List
 
 

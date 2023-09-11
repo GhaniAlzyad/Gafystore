@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from ..schema import GameResponseSchema, GameRequestSchema
-from ..models import Game
+from App.src.schema import GameResponseSchema, GameRequestSchema
+from App.src.models import Game
 from typing import List
 
 

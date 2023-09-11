@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from ..schema import AccountRequestSchema,AccountResponseSchema
-from ..models import Account
+from App.src.schema import AccountRequestSchema,AccountResponseSchema
+from App.src.models import Account
 from typing import List
 
 api = APIRouter(

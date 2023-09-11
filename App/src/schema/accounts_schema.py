@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from ..models import Account,Game
+from App.src.models import Account,Game
 
 class AccountRequestSchema(BaseModel):
     game_id : int

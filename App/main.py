@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .database import db
+from App.database import db
 
 def init_app():
     db.init()
@@ -15,34 +15,9 @@ def init_app():
     async def shutdown():
         await db.close()
 
-    from .src.controllers import user_controller, Game_controller,credits_controller,accounts_controller,harga_controller
+    from .router import api
+    app.include_router(api, prefix="/api/v1")
 
-    @app.get('/health-check')
-    async def pong():
-        return {'ping':'pong'}
-        
-    app.include_router(
-        user_controller.api,
-        prefix="/api/v1"
-        )
-    
-    app.include_router(
-        Game_controller.api,
-        prefix="/api/v1"
-        )
-    
-    app.include_router(
-        credits_controller.api,
-        prefix="/api/v1"
-        )
-    app.include_router(
-        harga_controller.api,
-        prefix="/api/v1"
-        )
-    app.include_router(
-        accounts_controller.api,
-        prefix="/api/v1"
-        )
     return app
 
 app = init_app()
