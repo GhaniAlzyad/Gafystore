@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy import false, true 
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import false, true
 from sqlalchemy import delete as sqlalchemy_delete, update as sqlalchemy_update
 from sqlalchemy import select
 from ...database import base, db
@@ -13,12 +13,12 @@ class Game(base):
     title = Column(String(255), nullable=False)
     description = Column(String(255), nullable=False)
     genre = Column(String(255),unique=True,nullable=False)
-    release_date = Column(String(255), nullable=False)
+    release_date = Column(DateTime, nullable=False)
 
     def __repr__(self):
         return f"<Game:({self.tittle})"
-    
-        
+
+
     @classmethod
     async def create(cls,**kwargs):
         Game = cls(**kwargs)
@@ -29,21 +29,21 @@ class Game(base):
             await db.rollback()
             raise
         return Game
-    
+
     @classmethod
     async def get(cls, id):
         query = select(cls).where(cls.game_id == id)
         Games = await db.execute(query)
         (Game,)= Games.first()
         return Game
-    
+
     @classmethod
     async def get_all(cls):
         query=select(cls)
         Games =await db.execute(query)
         Games = Games.scalars().all()
         return Games
-    
+
     @classmethod
     async def update(cls,id,**kwargs):
         Game = await cls.get(id)
@@ -77,7 +77,16 @@ class Game(base):
             await db.rollback()
             raise
         return True
-    
+
+    @classmethod
+    async def get_by_name_or_description(cls, param):
+        query = select(cls).where(
+            (cls.title.like(f"%{param}%")) | (cls.description.like(f"%{param}%"))
+        )
+        Games = await db.execute(query)
+        Games = Games.scalars().all()
+        return Games
+
     def from_dict(self, data):
         fields=[
             'tittle', 'description', 'genre', 'release_date',
