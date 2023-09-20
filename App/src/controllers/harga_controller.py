@@ -32,3 +32,7 @@ async def update(id: int,harga: HargaRequestSchema):
 @api.delete('/{id}',response_model=bool)
 async def delete (id: int):
     return await Harga.delete(id)
+
+@api.get('/search/', response_model=list[HargaResponseSchema])
+async def search(game_id: int | None = ''):
+    return await Harga.get_by_name_or_description(game_id)

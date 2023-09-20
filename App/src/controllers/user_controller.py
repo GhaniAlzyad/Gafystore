@@ -15,8 +15,8 @@ async def create_user(user: UserRequestSchema):
     return await UserLogic.create(user)
 
 @api.get("/{id}", response_model=UserResponseSchema)
-async def get_user(id: str, token: str = Header(None)):
-    auth = await token_validator(token)
+async def get_user(id: str, token: str = Header(None)): #add header token for authentication
+    auth = await token_validator(token) #add auth
     if auth:
         return await UserLogic.get_by_id(id, auth.username)
 

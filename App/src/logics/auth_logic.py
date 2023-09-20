@@ -9,11 +9,11 @@ class AuthLogic:
 
     @staticmethod
     async def login(param: AuthSchema):
-        user = await User.get_by_email_or_username(param.username)
-        if not check_password_hash(user.password, param.password):
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong password!")
+        user = await User.get_by_email_or_username(param.username) #cek user terdaftar atau tidak
+        if not check_password_hash(user.password, param.password): #klw terdaftar cek password sesuai atau tidak
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong password!") #jika tidak maka return unauthorize
 
-        if user.token is None or user.expired_at < datetime.now():
+        if user.token is None or user.expired_at < datetime.now():  #klw sesuai token nya expired / ngga
             user.token = generate_token(user.username, user.email)
             user.expired_at = datetime.now() + timedelta(hours=1)
             await user.commit()

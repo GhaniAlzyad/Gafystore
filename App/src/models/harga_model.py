@@ -1,16 +1,19 @@
-from sqlalchemy import  Column, Integer
+from sqlalchemy import  Column, Integer,ForeignKey, String
 from sqlalchemy import false, true 
 from sqlalchemy import delete as sqlalchemy_delete, update as sqlalchemy_update
+from sqlalchemy.orm import relationship
 from sqlalchemy import select
 from ...database import base, db
 from datetime import datetime
 
 class Harga(base):
-    __tablename__ = 'harga'
+    __tablename__ = 'Harga'
     
     id_jumlah = Column(Integer, primary_key=True)
+    game_id = Column(Integer, nullable=False)
     jumlah_credit_game = Column(Integer)
     harga = Column(Integer)
+
 
     def __repr__(self):
         return f"<Harga:({self.id_jumlah})"
@@ -29,7 +32,7 @@ class Harga(base):
     
     @classmethod
     async def get(cls, id):
-        query = select(cls).where(cls.Harga_id == id)
+        query = select(cls).where(cls.id_jumlah == id)
         harga = await db.execute(query)
         (Harga,)= harga.first()
         return Harga
@@ -51,7 +54,7 @@ class Harga(base):
 
         query =(
             sqlalchemy_update(cls)
-            .where(cls.id == id)
+            .where(cls.id_jumlah == id)
             .values(**Harga_dict)
             .execution_options(synchronize_session=False)
         )
@@ -74,6 +77,15 @@ class Harga(base):
             await db.rollback()
             raise
         return True
+
+    @classmethod
+    async def get_by_name_or_description(cls, param):
+        query = select(cls).where(
+            (cls.title.like(f"%{param}%")) | (cls.description.like(f"%{param}%"))
+        )
+        cart_items = await db.execute(query)
+        cart_items = cart_items.scalars().all()
+        return cart_items
     
     def from_dict(self, data):
         fields=[

@@ -12,7 +12,7 @@ class Game(base):
     game_id = Column(Integer, primary_key=True,autoincrement=True)
     title = Column(String(255), nullable=False)
     description = Column(String(255), nullable=False)
-    genre = Column(String(255),unique=True,nullable=False)
+    genre = Column(String(255),nullable=False)
     release_date = Column(DateTime, nullable=False)
 
     def __repr__(self):
@@ -82,6 +82,15 @@ class Game(base):
     async def get_by_name_or_description(cls, param):
         query = select(cls).where(
             (cls.title.like(f"%{param}%")) | (cls.description.like(f"%{param}%"))
+        )
+        Games = await db.execute(query)
+        Games = Games.scalars().all()
+        return Games
+    
+    @classmethod
+    async def get_by_game_id_or_description(cls, param):
+        query = select(cls).where(
+            (cls.game_id.like(f"%{param}%")) | (cls.description.like(f"%{param}%"))
         )
         Games = await db.execute(query)
         Games = Games.scalars().all()
