@@ -2,9 +2,8 @@ from pydantic import BaseModel
 from typing import Optional
 
 class addRequestSchema(BaseModel):
-    user_id: str
-    game_id: int
-    akun_id: str
+    id_jumlah: int
+    account_id: int
     quantity: int
     status: str
 
@@ -14,15 +13,15 @@ class addRequestSchema(BaseModel):
 class addUpdateSchema(BaseModel):
     id: int
     user_id: Optional[int] = None
-    game_id: Optional[int] = None
-    akun_id: Optional[str] = None
+    id_jumlah: Optional[int] = None
+    account_id: Optional[int] = None
     quantity: Optional[int] = None
     status: Optional[str] = None
 
 class addResponseSchema(BaseModel):
     user_id: str
-    game_id: int
-    akun_id: str
+    id_jumlah: int
+    account_id: int
     quantity: int
     status: str
 

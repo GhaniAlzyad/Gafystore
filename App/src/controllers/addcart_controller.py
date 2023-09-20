@@ -11,8 +11,11 @@ api = APIRouter(
 )
 
 @api.post("/", response_model=addResponseSchema)
-async def create_user(add: addRequestSchema):
-    return await AddLogic.create(add)
+async def add_cart(add: addRequestSchema, token: str = Header(None)):
+    auth = token_validator(token)
+    if auth:
+        print(f"<user{auth.id}")
+        return await AddLogic.create(add, auth.id)
 
 @api.get("/{id}", response_model=addResponseSchema)
 async def get_user(user_id: str, token: str = Header(None)): #add header token for authentication

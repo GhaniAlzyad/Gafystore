@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from App.src.schema import HargaResponseSchema, HargaRequestSchema
 from App.src.models import Harga
+from App.src.logics import HargaLogic
 from typing import List
 
 
@@ -11,8 +12,7 @@ api = APIRouter(
 
 @api.post("/", response_model=HargaResponseSchema)
 async def create_harga(harga: HargaRequestSchema):
-    harga = await Harga.create(**dict(harga))
-    return harga
+    return await HargaLogic.create(harga)
 
 @api.get("/{id}", response_model=HargaResponseSchema)
 async def get_harga(id: int):
@@ -35,4 +35,5 @@ async def delete (id: int):
 
 @api.get('/search/', response_model=list[HargaResponseSchema])
 async def search(game_id: int | None = ''):
-    return await Harga.get_by_name_or_description(game_id)
+    harga = await Harga.get_by_game_id(game_id)
+    return harga

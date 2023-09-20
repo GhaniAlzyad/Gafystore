@@ -1,5 +1,5 @@
 from sqlalchemy import  Column, Integer,ForeignKey, String
-from sqlalchemy import false, true 
+from sqlalchemy import false, true
 from sqlalchemy import delete as sqlalchemy_delete, update as sqlalchemy_update
 from sqlalchemy.orm import relationship
 from sqlalchemy import select
@@ -8,7 +8,7 @@ from datetime import datetime
 
 class Harga(base):
     __tablename__ = 'Harga'
-    
+
     id_jumlah = Column(Integer, primary_key=True)
     game_id = Column(Integer, nullable=False)
     jumlah_credit_game = Column(Integer)
@@ -17,8 +17,8 @@ class Harga(base):
 
     def __repr__(self):
         return f"<Harga:({self.id_jumlah})"
-    
-        
+
+
     @classmethod
     async def create(cls,**kwargs):
         Harga = cls(**kwargs)
@@ -29,21 +29,21 @@ class Harga(base):
             await db.rollback()
             raise
         return Harga
-    
+
     @classmethod
     async def get(cls, id):
         query = select(cls).where(cls.id_jumlah == id)
         harga = await db.execute(query)
         (Harga,)= harga.first()
         return Harga
-    
+
     @classmethod
     async def get_all(cls):
         query=select(cls)
         harga =await db.execute(query)
         harga = harga.scalars().all()
         return harga
-    
+
     @classmethod
     async def update(cls,id,**kwargs):
         Harga = await cls.get(id)
@@ -86,7 +86,14 @@ class Harga(base):
         cart_items = await db.execute(query)
         cart_items = cart_items.scalars().all()
         return cart_items
-    
+
+    @classmethod
+    async def get_by_game_id(cls, id):
+        query = select(cls).where(cls.game_id == id)
+        Games = await db.execute(query)
+        return Games.scalars().all()
+
+
     def from_dict(self, data):
         fields=[
             'jumlah_credit_game', 'harga',

@@ -1,5 +1,5 @@
 from sqlalchemy import  Column, Integer, String
-from sqlalchemy import false, true 
+from sqlalchemy import false, true
 from sqlalchemy import delete as sqlalchemy_delete, update as sqlalchemy_update
 from sqlalchemy.orm import relationship
 from sqlalchemy import select
@@ -13,16 +13,15 @@ class CartItem(base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(String, nullable=False)
-    game_id = Column(Integer)
+    id_jumlah = Column(Integer)
     account_id =Column(Integer)
     quantity = Column(Integer, default=1)
-    token = Column(String(255), nullable=True)
     status = Column(String, nullable=False) #paid / unpaid
 
     def __repr__(self):
         return f"<user_id)"
-    
-        
+
+
     @classmethod
     async def create(cls,**kwargs):
         CartItem = cls(**kwargs)
@@ -33,21 +32,21 @@ class CartItem(base):
             await db.rollback()
             raise
         return CartItem
-    
+
     @classmethod
     async def get(cls, id):
         query = select(cls).where(cls.CartItem_id == id)
         cart_items = await db.execute(query)
         (CartItem,)= cart_items.first()
         return CartItem
-    
+
     @classmethod
     async def get_all(cls):
         query=select(cls)
         cart_items =await db.execute(query)
         cart_items = cart_items.scalars().all()
         return cart_items
-    
+
     @classmethod
     async def update(cls,id,**kwargs):
         CartItem = await cls.get(id)
@@ -81,7 +80,7 @@ class CartItem(base):
             await db.rollback()
             raise
         return True
-    
+
     def from_dict(self, data):
         fields=[
             'user_id', 'game_id', 'amount', 'purchase_date', 'metode_pembayaran', 'status_pembayaran',

@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 from fastapi import HTTPException, status
 from App.src.models import User
-from App.src.schema import AuthSchema
+from App.src.schema import AuthSchema, AuthSchemaResponse
 
 class AuthLogic:
 
@@ -26,7 +26,7 @@ def generate_password(password: str):
 def generate_token(username: str, email: str):
     return sha256(f"{username}{email}{datetime.now()}".encode('utf-8')).hexdigest()
 
-async def token_validator(token: str) -> AuthSchema:
+async def token_validator(token: str) -> AuthSchemaResponse:
     user = await User.get_by_token(token)
     now = datetime.now()
     expired_in_five = now + timedelta(minutes=10)
@@ -40,4 +40,5 @@ async def token_validator(token: str) -> AuthSchema:
         user.expired_at = now + timedelta(hours=1)
         await user.commit()
 
+    print(f"<sini{user.id}")
     return user

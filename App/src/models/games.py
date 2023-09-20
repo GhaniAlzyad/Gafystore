@@ -4,6 +4,7 @@ from sqlalchemy import delete as sqlalchemy_delete, update as sqlalchemy_update
 from sqlalchemy import select
 from ...database import base, db
 from datetime import datetime
+from fastapi import HTTPException, status
 
 
 class Game(base):
@@ -16,7 +17,7 @@ class Game(base):
     release_date = Column(DateTime, nullable=False)
 
     def __repr__(self):
-        return f"<Game:({self.tittle})"
+        return f"<Game:({self.title})"
 
 
     @classmethod
@@ -32,9 +33,11 @@ class Game(base):
 
     @classmethod
     async def get(cls, id):
-        query = select(cls).where(cls.game_id == id)
-        Games = await db.execute(query)
-        (Game,)= Games.first()
+        query = await db.execute(select(cls).where(cls.game_id == id))
+        game = query.scalar_one_or_none()
+        if game is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Game not found")
+
         return Game
 
     @classmethod
@@ -82,15 +85,6 @@ class Game(base):
     async def get_by_name_or_description(cls, param):
         query = select(cls).where(
             (cls.title.like(f"%{param}%")) | (cls.description.like(f"%{param}%"))
-        )
-        Games = await db.execute(query)
-        Games = Games.scalars().all()
-        return Games
-    
-    @classmethod
-    async def get_by_game_id_or_description(cls, param):
-        query = select(cls).where(
-            (cls.game_id.like(f"%{param}%")) | (cls.description.like(f"%{param}%"))
         )
         Games = await db.execute(query)
         Games = Games.scalars().all()
