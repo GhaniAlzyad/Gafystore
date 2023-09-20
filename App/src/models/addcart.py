@@ -23,8 +23,8 @@ class CartItem(base):
 
 
     @classmethod
-    async def create(cls,**kwargs):
-        CartItem = cls(**kwargs)
+    async def create(cls,id, **kwargs):
+        CartItem = cls(user_id=id, **kwargs)
         db.add(CartItem)
         try:
             await db.commit()

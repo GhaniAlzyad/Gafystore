@@ -34,5 +34,5 @@ async def delete (id: int):
     return await Game.delete(id)
 
 @api.get('/search/', response_model=list[GameResponseSchema])
-async def search(name: str | None = ''):
+async def search(name: str or None = ''):
     return await Game.get_by_name_or_description(name)

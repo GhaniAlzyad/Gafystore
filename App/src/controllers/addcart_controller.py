@@ -12,9 +12,8 @@ api = APIRouter(
 
 @api.post("/", response_model=addResponseSchema)
 async def add_cart(add: addRequestSchema, token: str = Header(None)):
-    auth = token_validator(token)
+    auth = await token_validator(token)
     if auth:
-        print(f"<user{auth.id}")
         return await AddLogic.create(add, auth.id)
 
 @api.get("/{id}", response_model=addResponseSchema)
