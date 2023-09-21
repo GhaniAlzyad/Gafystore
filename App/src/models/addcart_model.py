@@ -5,8 +5,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import select
 from ...database import base, db
 from datetime import datetime
-
-
+from fastapi import HTTPException, status
 
 class CartItem(base):
     __tablename__ = 'cart_items'
@@ -34,11 +33,18 @@ class CartItem(base):
         return CartItem
 
     @classmethod
-    async def get(cls, id):
+    async def get_by_id(cls, id):
         query = select(cls).where(cls.CartItem_id == id)
         cart_items = await db.execute(query)
         (CartItem,)= cart_items.first()
         return CartItem
+    
+    @classmethod
+    async def get_by_user_and_id_jumlah(cls, user_id,id_jumlah):
+        query = select(cls).where(cls.user_id==user_id,cls.id_jumlah==id_jumlah)
+        cart_items = await db.execute(query)
+
+        return cart_items.scalar_one_or_none()
 
     @classmethod
     async def get_all(cls):
@@ -89,3 +95,10 @@ class CartItem(base):
             value = data.get(field)
             if value is not None:
                 setattr(self, field, value)
+    @staticmethod
+    async def commit():
+        try:
+            await db.commit()
+        except:
+            await db.rollback()
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error")

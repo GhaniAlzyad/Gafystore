@@ -17,13 +17,13 @@ async def add_cart(add: addRequestSchema, token: str = Header(None)):
         return await AddLogic.create(add, auth.id)
 
 @api.get("/{id}", response_model=addResponseSchema)
-async def get_user(user_id: str, token: str = Header(None)): #add header token for authentication
+async def get_cart(user_id: str, token: str = Header(None)): #add header token for authentication
     auth = await token_validator(token) #add auth
     if auth:
         return await AddLogic.get_by_id(id, auth.user_id)
 
 @api.get("/",response_model=list[addResponseSchema])
-async def get_all_user():
+async def get_all_cart():
     return await CartItem.get_all()
 
 @api.put('/{id}', response_model=addResponseSchema)
