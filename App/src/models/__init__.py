@@ -6,3 +6,4 @@ from .harga_model import Harga
 from .addcart_model import CartItem
 from .payment_model import Payment
 from .order_model import Order
+from .admin_model import Admin

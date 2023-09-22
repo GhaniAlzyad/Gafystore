@@ -6,7 +6,7 @@ from fastapi import HTTPException, status
 
 
 class Order(base):
-    _tablename_ = 'orders'
+    __tablename__ = 'orders'
     id = Column(Integer, primary_key=True)
     user_id = Column(String, nullable=False, index=True)
     date = Column(DateTime, nullable=False)
@@ -77,7 +77,7 @@ class Order(base):
 
     def from_dict(self, data):
         fields = [
-            'customer_id', 'date', 'order_status', 'total_price',
+            'user_id', 'date', 'order_status', 'total_price',
         ]
         for field in fields:
             value = data.get(field)

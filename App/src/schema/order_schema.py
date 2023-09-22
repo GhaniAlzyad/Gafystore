@@ -7,7 +7,7 @@ from typing import List
 
 
 class OrderRequestSchema(BaseModel):
-    customer_id: str
+    user_id: str
     # date: datetime
     # order_status: str
     # total_price: float
@@ -36,7 +36,7 @@ class OrderResponseSchema(BaseModel):
 
     @classmethod
     async def from_model(cls, order: Order):
-        customer = await Customer.get_by_id(order.customer_id)
+        customer = await Customer.get_by_id(order.user_id)
         return cls(
             id=order.id,
             name=customer.name

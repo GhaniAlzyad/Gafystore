@@ -7,3 +7,4 @@ from .addcart_schema import addRequestSchema,addResponseSchema, addUpdateSchema
 from .auth_schema import AuthSchema, AuthSchemaResponse
 from .payment_schema import PaymentUpdateSchema,PaymentResponseSchema,PaymentRequestSchema
 from .order_schema import OrderUpdateSchema,OrderResponseSchema,OrderRequestSchema
+from .admin_schema import AdminUpdateSchema,AdminResponseSchema,AdminRequestSchema
