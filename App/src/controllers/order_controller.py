@@ -25,10 +25,10 @@ async def get_order(id: int):
     return order
 
 
-# ganti pakai get_by_customer_id
+# ganti pakai get_by_user_id
 @api.get("/customer/{id}", response_model=List[OrderResponseSchema])
-async def get_by_customer_id(id: str):
-    orders = await Order.get_all_by_customer_id(id)
+async def get_by_user_id(id: str):
+    orders = await Order.get_all_by_user_id(id)
     return orders
 
 

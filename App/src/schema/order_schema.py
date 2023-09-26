@@ -1,13 +1,12 @@
 from pydantic import BaseModel
 from datetime import datetime
 from App.src.models import Order
-from App.src.models import Customer
-from . import ProductOrderSchema
+from App.src.models import User
 from typing import List
 
 
 class OrderRequestSchema(BaseModel):
-    user_id: str
+    id: str
     # date: datetime
     # order_status: str
     # total_price: float
@@ -25,19 +24,18 @@ class OrderUpdateSchema(BaseModel):
 
 class OrderResponseSchema(BaseModel):
     id: int
-    user_id: str
+    id: str
     date: datetime
     order_status: str
     total_price: float
-    products: List[ProductOrderSchema]
 
     class Config:
         orm_mode = True
 
     @classmethod
     async def from_model(cls, order: Order):
-        customer = await Customer.get_by_id(order.user_id)
+        id = await id.get_by_id(order.id)
         return cls(
             id=order.id,
-            name=customer.name
+            name=id.name
         )

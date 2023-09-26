@@ -8,3 +8,4 @@ from .auth_schema import AuthSchema, AuthSchemaResponse
 from .payment_schema import PaymentUpdateSchema,PaymentResponseSchema,PaymentRequestSchema
 from .order_schema import OrderUpdateSchema,OrderResponseSchema,OrderRequestSchema
 from .admin_schema import AdminUpdateSchema,AdminResponseSchema,AdminRequestSchema
+from .orderdetail_schema import OrderdetailRequestSchema,OrderdetailResponseSchema,OrderdetailUpdateSchema

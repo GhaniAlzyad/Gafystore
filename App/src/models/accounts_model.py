@@ -10,7 +10,6 @@ class Account(base):
     
     account_id = Column(Integer, primary_key=True)
     game_id = Column(Integer)
-    level = Column(Integer)
     items = Column(String(255), nullable=False)
     date_created = Column(DateTime, default=datetime.utcnow)
 

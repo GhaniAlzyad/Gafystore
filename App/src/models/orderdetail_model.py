@@ -7,15 +7,13 @@ from fastapi import HTTPException, status
 
 class Orderdetail(base):
     __tablename__ = 'orderdetail'
-    orderdetai_id = Column(Integer,primary_key=True)
+    orderdetail_id = Column(Integer,primary_key=True)
     order_id = Column(Integer, nullable=False)
     user_id = Column(String, nullable=False, index=True)
-    game_id = Column(Integer,nullable=False)
+    id_jumlah= Column(String, nullable=False, index=True)
     account_id = Column(Integer,nullable=False)
     Quantity = Column(Integer,default=1)
     UnitPrice = Column(Integer)
-    date = Column(DateTime, nullable=False)
-    order_status = Column(String(255), nullable=False)
     total_price = Column(Float, nullable=False)
 
     def _repr_(self):
@@ -33,22 +31,22 @@ class Orderdetail(base):
         return order
 
     @classmethod
-    async def get(cls, orderdetai_id):
-        query = select(cls).where(cls.orderdetai_id == orderdetai_id)
+    async def get(cls, orderdetail_id):
+        query = select(cls).where(cls.orderdetail_id == orderdetail_id)
         orders = await db.execute(query)
         (order,) = orders.first()
         return order
 
     @classmethod
-    async def get_all_by_customer_id(cls, orderdetai_id):
-        query = select(cls).where(cls.user_id == orderdetai_id)
+    async def get_all_by_user_id(cls, orderdetail_id):
+        query = select(cls).where(cls.user_id == orderdetail_id)
         orders = await db.execute(query)
         orders = orders.scalars().all()
         return orders
 
     @classmethod
-    async def update(cls, orderdetai_id, **kwargs):
-        order = await cls.get(orderdetai_id)
+    async def update(cls, orderdetail_id, **kwargs):
+        order = await cls.get(orderdetail_id)
         order.from_dict(kwargs)
 
         order_dict = order._dict_
@@ -56,7 +54,7 @@ class Orderdetail(base):
 
         query = (
             sqlalchemy_update(cls)
-            .where(cls.orderdetai_id == orderdetai_id)
+            .where(cls.orderdetail_id == orderdetail_id)
             .values(**order_dict)
             .execution_options(synchronize_session=False)
         )
@@ -70,8 +68,8 @@ class Orderdetail(base):
         return order_dict
 
     @classmethod
-    async def delete(cls, orderdetai_id):
-        query = sqlalchemy_delete (cls).where(cls.orderdetai_id == orderdetai_id)
+    async def delete(cls, orderdetail_id):
+        query = sqlalchemy_delete (cls).where(cls.orderdetail_id == orderdetail_id)
         await db.execute(query)
         try:
             await db.commit()

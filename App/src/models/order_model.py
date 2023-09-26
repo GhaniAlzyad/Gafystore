@@ -35,7 +35,7 @@ class Order(base):
         return order
 
     @classmethod
-    async def get_all_by_customer_id(cls, order_id):
+    async def get_all_by_user_id(cls, order_id):
         query = select(cls).where(cls.user_id == order_id)
         orders = await db.execute(query)
         orders = orders.scalars().all()

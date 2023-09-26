@@ -1,4 +1,4 @@
-from .src.controllers import user_controller, Game_controller,credits_controller,accounts_controller,accounts_controller,auth_controller,addcart_controller,harga_controller,payment_controller
+from .src.controllers import user_controller, Game_controller,credits_controller,accounts_controller,accounts_controller,auth_controller,addcart_controller,harga_controller,payment_controller,order_controller,orderdetail_controller,admin_controller
 from fastapi import APIRouter
 
 
@@ -17,3 +17,6 @@ api.include_router(accounts_controller.api)
 api.include_router(auth_controller.router)
 api.include_router(addcart_controller.api)
 api.include_router(payment_controller.api)
+api.include_router(order_controller.api)
+api.include_router(orderdetail_controller.api)
+api.include_router(admin_controller.api)
